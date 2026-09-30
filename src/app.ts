@@ -1,5 +1,5 @@
 import * as readline from 'readline';
-import { add, sub, mul, div, area, perimetro } from './modules/math';
+import { add, sub, mul, div, area, perimetro, areaC, perimetroC } from './modules/math';
 
 // Configuração da interface de leitura do terminal
 const rl = readline.createInterface({
@@ -23,31 +23,45 @@ async function menu() {
     console.log("4. Divisão (/)");
     console.log("5. Area retangulo");
     console.log("6. Perimetro retangulo");
-    console.log("7. Sair");
+    console.log("7. Area Circulo");
+    console.log("8. Perimetro Circulo");
+    console.log("9. Sair");
     
     const opcao = await question("Escolha uma opção (1-5): ");
 
-    if (opcao === "7") {
+    if (opcao === "9") {
       console.log("A sair da aplicação... Até breve!");
       continuar = false;
       rl.close();
       break;
     }
 
-    if (!["1", "2", "3", "4", "5", "6"].includes(opcao)) {
+    if (!["1", "2", "3", "4", "5", "6", "7", "8"].includes(opcao)) {
       console.log("Opção inválida! Tente novamente.");
       continue;
     }
 
+
+
     // Pede os dois operandos ao utilizador
-    const num1Input = await question("Introduza o primeiro número inteiro: ");
-    const num2Input = await question("Introduza o segundo número inteiro: ");
+    let num1Input: string = "";
+    let num2Input: string = "";
+    let raio: string = "";
+
+    if(opcao < "7"){
+        num1Input = await question("Introduza o primeiro número inteiro: ");
+        num2Input = await question("Introduza o segundo número inteiro: ");
+    }else{
+      const raio = await question("Introduza o raio: ");
+    }
+    
 
     const num1 = parseInt(num1Input, 10);
     const num2 = parseInt(num2Input, 10);
+    const rnum = parseInt(raio, 10);
 
     // Valida se os valores introduzidos são números válidos
-    if (isNaN(num1) || !Number.isInteger(num1) || isNaN(num2) || !Number.isInteger(num2)) {
+    if (isNaN(num1) || isNaN(rnum) || !Number.isInteger(num1) || isNaN(num2) || !Number.isInteger(num2)) {
       console.log("Erro: Por favor, introduza apenas números inteiros válidos.");
       continue;
     }
@@ -80,6 +94,14 @@ async function menu() {
         case "6":
           resultado = perimetro(num1, num2);
           console.log(`\n> Perimetro: ${resultado}`);
+          break;
+        case "7":
+          resultado = areaC(rnum);
+          console.log(`\n> Area Circulo: ${resultado}`);
+          break;
+        case "8":
+          resultado = perimetroC(rnum);
+          console.log(`\n> Perimetro Circulo: ${resultado}`);
           break;
       }
     } catch (error: any) {
